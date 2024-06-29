@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import frame from "../img/frame/test_frame.png";
+import frame from "../img/frame/frame.svg";
 import styled from "styled-components";
 import styles from "./EditPage.module.scss";
 import { useEffect } from "react";
@@ -42,11 +42,54 @@ const EditPage = () => {
   };
 
   const onDownloadBtn = () => {
+    // domtoimage
+    //   .toBlob(document.querySelector(`.${styles.fake}`))
+    //   .then((blob) => {
+    //     saveAs(blob, "editFrame.png");
+    //   });
+
     domtoimage
-      .toBlob(document.querySelector(`.${styles.editFrame}`))
+    .toPng(document.querySelector(`.${styles.editFrame}`))
+    .then(function (dataUrl) {
+      document.querySelector(`.${styles.fake}`).style.backgroundImage = `url(${dataUrl})`
+    })
+
+    // domtoimage.toPng(document.querySelector(`.${styles.fake}`), {
+    //   style: {
+    //     'left': '0px'
+    //   }
+    // }).then(function(dataUrl) {
+    //   var img = new Image();
+    //   img.src = dataUrl;
+    //   document.querySelector(`.${styles.fake}`).appendChild(img);
+    //   //download(dataUrl, 'myDiv.png');
+    // });
+  };
+
+  const onDownloadBtn02 = () => {
+    domtoimage
+      .toBlob(document.querySelector(`.${styles.fake}`))
       .then((blob) => {
         saveAs(blob, "editFrame.png");
       });
+
+    // domtoimage
+    // .toPng(document.querySelector(`.${styles.editFrame}`))
+    // .then(function (dataUrl) {
+    //     var img = new Image();
+    //     img.src = dataUrl;
+    //     document.querySelector(`.${styles.fake}`).appendChild(img);
+    // })
+
+    // domtoimage.toPng(document.querySelector(`.${styles.fake} img`), {
+    //   style: {
+    //     'width': '1.6cm',
+    //     'height': '2.3cm'
+    //   }
+    // }).then((blob) => {
+    //   console.log(blob)
+    //       saveAs(blob, "editFrame.png");
+    //     });
   };
 
   useEffect(() => {
@@ -59,6 +102,7 @@ const EditPage = () => {
 
   return (
     <>
+    <div className={styles.fake}></div>
       <div className={styles.editFrameWrap}>
         <div className={styles.editFrameContainer}>
           <div className={styles.editFrame}>
@@ -202,6 +246,10 @@ const EditPage = () => {
           </button>
           <button className="downBtn" onClick={onDownloadBtn}>
             다운로드 버튼
+          </button>
+
+          <button className="downBtn" onClick={onDownloadBtn02}>
+            다운로드 버튼02
           </button>
         </div>
       </div>
